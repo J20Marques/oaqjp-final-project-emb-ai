@@ -13,10 +13,14 @@ def sent_detector():
     """
     Receives a text from the request, analyzes its emotion using the
     emotion_detector function and returns a formatted string with the
-    scores and dominant emotion.
+    scores and dominant emotion. Handles blank input gracefully.
     """
     text_to_analyze = request.args.get('textToAnalyze')
     response = emotion_detector(text_to_analyze)
+
+    # Error handling: se a emoção dominante for None, o input era inválido
+    if response['dominant_emotion'] is None:
+        return "Invalid text! Please try again!"
 
     anger = response['anger']
     disgust = response['disgust']
